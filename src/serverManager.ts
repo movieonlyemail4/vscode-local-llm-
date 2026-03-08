@@ -181,6 +181,14 @@ export class ServerManager {
 
   // ── llama-server (GGUF) ─────────────────────────────────────────────────
 
+  private _hasNvidiaGpu(): boolean {
+    try { execSync('nvidia-smi', { stdio: 'ignore', timeout: 3000 }); return true; } catch { return false; }
+  }
+
+  private _hasAmdGpu(): boolean {
+    try { execSync('rocm-smi', { stdio: 'ignore', timeout: 3000 }); return true; } catch { return false; }
+  }
+
   private async _startLlamaServer(model: LocalModel): Promise<ServerInfo> {
     const bin = this.findLlamaServer();
     if (!bin) throw new Error(
@@ -189,10 +197,19 @@ export class ServerManager {
 
     const port = 8765;
     this._killProcess();
+
+    const hasGpu = this._hasNvidiaGpu() || this._hasAmdGpu();
+    if (hasGpu) {
+      this._outputChannel.appendLine('[Local LLM] GPU detected — offloading all layers to GPU (-ngl 99)');
+    }
+
     this._outputChannel.appendLine(`[Local LLM] Starting llama-server: ${model.name}`);
     this._outputChannel.show(true);
 
-    this._process = spawn(bin, ['-m', model.path!, '--port', String(port), '--host', '127.0.0.1', '-c', '4096'], {
+    const args = ['-m', model.path!, '--port', String(port), '--host', '127.0.0.1', '-c', '4096'];
+    if (hasGpu) { args.push('-ngl', '99'); }
+
+    this._process = spawn(bin, args, {
       stdio: ['ignore', 'pipe', 'pipe']
     });
     this._process.stdout?.on('data', (d: Buffer) => this._outputChannel.append(d.toString()));
