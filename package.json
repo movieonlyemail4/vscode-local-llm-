@@ -1,0 +1,170 @@
+{
+  "name": "local-llm-connect",
+  "displayName": "Local LLM Connect",
+  "description": "Run local LLM models (Ollama, GGUF, SafeTensors) directly in VS Code — auto-detects models, starts servers, and exposes an MCP endpoint for any AI client.",
+  "version": "2.0.0",
+  "publisher": "your-publisher-id",
+  "author": "Your Name",
+  "license": "MIT",
+  "homepage": "https://github.com/YOUR_USERNAME/local-llm-connect",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YOUR_USERNAME/local-llm-connect.git"
+  },
+  "bugs": {
+    "url": "https://github.com/YOUR_USERNAME/local-llm-connect/issues"
+  },
+  "keywords": [
+    "llm", "ai", "local", "ollama", "gguf", "llama", "mcp",
+    "copilot", "chat", "code-assistant", "huggingface", "safetensors"
+  ],
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": ["AI", "Machine Learning", "Other"],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "localLLM.selectModel",
+        "title": "Local LLM: Select Model",
+        "icon": "$(list-selection)"
+      },
+      {
+        "command": "localLLM.openChat",
+        "title": "Local LLM: Open Chat",
+        "icon": "$(comment-discussion)"
+      },
+      {
+        "command": "localLLM.askSelection",
+        "title": "Local LLM: Ask About Selection"
+      },
+      {
+        "command": "localLLM.explainCode",
+        "title": "Local LLM: Explain Selected Code"
+      },
+      {
+        "command": "localLLM.refactorCode",
+        "title": "Local LLM: Refactor Selected Code"
+      },
+      {
+        "command": "localLLM.stopServer",
+        "title": "Local LLM: Stop Server"
+      },
+      {
+        "command": "localLLM.showMcpInfo",
+        "title": "Local LLM: Show MCP Connection Info"
+      },
+      {
+        "command": "localLLM.configure",
+        "title": "Local LLM: Configure Settings"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "localLLM.askSelection",
+          "when": "editorHasSelection",
+          "group": "localLLM"
+        },
+        {
+          "command": "localLLM.explainCode",
+          "when": "editorHasSelection",
+          "group": "localLLM"
+        },
+        {
+          "command": "localLLM.refactorCode",
+          "when": "editorHasSelection",
+          "group": "localLLM"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "localLLM.openChat",
+          "group": "navigation"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "localLLM.openChat",
+        "key": "ctrl+shift+l",
+        "mac": "cmd+shift+l"
+      },
+      {
+        "command": "localLLM.askSelection",
+        "key": "ctrl+shift+a",
+        "mac": "cmd+shift+a",
+        "when": "editorHasSelection"
+      },
+      {
+        "command": "localLLM.selectModel",
+        "key": "ctrl+shift+m",
+        "mac": "cmd+shift+m"
+      }
+    ],
+    "configuration": {
+      "title": "Local LLM Connect",
+      "properties": {
+        "localLLM.mcpPort": {
+          "type": "number",
+          "default": 3333,
+          "description": "Port for the MCP server. Connect Claude Desktop, Cursor, or any MCP client to http://127.0.0.1:<port>/mcp"
+        },
+        "localLLM.extraModelPaths": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": [],
+          "description": "Extra directories to scan for model files (.gguf, safetensors, etc.)"
+        },
+        "localLLM.temperature": {
+          "type": "number",
+          "default": 0.7,
+          "minimum": 0,
+          "maximum": 2,
+          "description": "Temperature for response generation (0 = deterministic, 2 = creative)"
+        },
+        "localLLM.maxTokens": {
+          "type": "number",
+          "default": 2048,
+          "description": "Maximum tokens to generate per response"
+        },
+        "localLLM.systemPrompt": {
+          "type": "string",
+          "default": "You are a helpful AI coding assistant. Be concise and precise.",
+          "description": "System prompt sent with every request"
+        }
+      }
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "localLLM",
+          "title": "Local LLM",
+          "icon": "$(hubot)"
+        }
+      ]
+    },
+    "views": {
+      "localLLM": [
+        {
+          "type": "webview",
+          "id": "localLLM.chatView",
+          "name": "Chat"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src --ext ts"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "@types/node": "^20.0.0",
+    "typescript": "4.9.5"
+  }
+}

@@ -1,0 +1,9 @@
+node_modules/
+out/
+*.vsix
+*.js
+*.js.map
+!.eslintrc.js
+.env
+.DS_Store
+Thumbs.db
