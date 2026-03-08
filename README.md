@@ -69,19 +69,28 @@ ollama pull llama3          # or any model
 
 ### 2. Install the Extension
 
-**From VS Code Marketplace** *(coming soon)*
-- Search for `Local LLM Connect` in the Extensions panel
+**From GitHub Releases (recommended)**
 
-**From VSIX**
+1. Go to [github.com/hit1001/vscode-local-llm-/releases/latest](https://github.com/hit1001/vscode-local-llm-/releases/latest)
+2. Download `local-llm-connect-2.0.0.vsix`
+3. Install it:
+
 ```bash
-# Download the latest .vsix from GitHub Releases, then:
 code --install-extension local-llm-connect-2.0.0.vsix
 ```
 
+Or install via VS Code UI:
+- Open VS Code → Extensions panel (`Ctrl+Shift+X`)
+- Click `...` (top-right) → **Install from VSIX...**
+- Select the downloaded `.vsix` file
+
+**From VS Code Marketplace** *(coming soon)*
+- Search for `Local LLM Connect` in the Extensions panel
+
 **From source**
 ```bash
-git clone https://github.com/YOUR_USERNAME/local-llm-connect
-cd local-llm-connect
+git clone https://github.com/hit1001/vscode-local-llm-
+cd vscode-local-llm-
 npm install
 npm run compile
 # Press F5 in VS Code to run, or package with vsce
