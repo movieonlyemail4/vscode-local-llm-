@@ -1,0 +1,47 @@
+<div class="row">
+   <div class="col-sm-12">
+     
+      <p>&nbsp;</p>  
+      <table class="table table-striped table-hover table-condensed" id="tblproposal">
+         <thead>
+            <tr>
+               <th>Index</th>
+               <th>Project Title</th>
+               <th>Project Type</th>
+               <th>Status</th>
+               <th>Student ID</th>
+               <th>Delete</th>
+            </tr>
+         </thead>
+         <tbody>
+         {{#each proposal}}
+            <tr>
+               <td class='index-column'>{{ id }}</td>
+               <td><a href="#proposal/view/{{id}}">{{title}}</a></td>
+               <td><span class="label label-primary">{{ type }}</span></td>
+               <td>
+                   {{#ifEquals status  'Pending'}}
+                    <span class="badge badge-primary" id="status">{{status}}</span>
+                    {{else}}
+                          {{#ifEquals status  'Approved'}}
+                             <span class="badge badge-success" id="status">{{status}}</span>
+                                   {{else}}
+                                        {{#ifEquals status  'Rejected'}}
+                                            <span class="badge badge-danger" id="status">{{status}}</span>
+                                   {{/ifEquals}}
+                          {{/ifEquals}}
+                    {{/ifEquals}}
+
+               </td>
+                <td><span class="label label-primary">{{ studentid }}</span></td>
+               <td>
+                  <a href="javascript:;">
+                     <span class="glyphicon glyphicon-trash" aria-hidden="true" data-proposalid="{{ id }}"></span>
+                  </a>
+               </td>
+            </tr>
+         {{/each}} 
+         </tbody>
+      </table>
+   </div>
+</div>
